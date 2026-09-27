@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-ink-50 text-ink-900 antialiased transition-colors duration-200 dark:bg-ink-950 dark:text-ink-50;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+h1, h2, h3, .font-display {
+  font-family: 'Poppins', system-ui, sans-serif;
+}
+
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d5d9e2;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #afb7c7;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #2b3242;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #40495d;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  box-shadow: 0 0 0 3px rgba(226, 31, 58, 0.35);
+  border-radius: 8px;
+}
+
+.container-page {
+  @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+/* Ticket printing — isolated-root strategy.
+   Rather than hiding every element under body (visibility: hidden on body * is unreliable:
+   hidden elements can still occupy layout, flex/absolute ancestors can still paginate, and
+   the browser can still emit blank/partial pages) BookingTicket portals a plain, print-only
+   copy of itself into #print-root, a sibling of #root declared in index.html. At print time
+   the entire app (#root) is removed from the layout with display:none and #print-root is
+   the only thing on the page, so exactly one ticket prints on exactly one page, regardless
+   of the app's on-screen layout, scroll position, or open modals. The printed ticket is
+   always built with fixed light colors (see BookingTicket.jsx), independent of the app's
+   active theme. The browser's own header/footer (URL, date, page title) are controlled by
+   the print dialog, not by this stylesheet — if present, the person can turn them off via
+   the dialog's "Headers and footers" option. */
+#print-root {
+  display: none;
+}
+@media print {
+  html,
+  body {
+    background: #ffffff !important;
+    height: auto !important;
+  }
+  #root,
+  .no-print {
+    display: none !important;
+  }
+  #print-root {
+    display: block !important;
+    position: static !important;
+  }
+  @page {
+    margin: 14mm;
+    size: auto;
+  }
+}
